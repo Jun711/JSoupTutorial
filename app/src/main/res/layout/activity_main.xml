@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/edtURL"
         android:layout_centerHorizontal="true"
-        android:text="Get data!"
+        android:text="Get Manga!"
         android:layout_marginTop="15dp"
         android:id="@+id/btnGo"/>
 
@@ -55,5 +55,21 @@
         android:lines="6"
         android:editable="false"
         android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edtResp"
+        android:layout_marginTop="10dp"
+        android:text="Popular Mangas"
+        android:id="@+id/txt4"/>
+
+    <ListView
+        android:layout_marginTop="10dp"
+        android:id="@+id/recipe_list_view"
+        android:layout_below="@+id/txt4"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+    </ListView>
 
 </RelativeLayout>

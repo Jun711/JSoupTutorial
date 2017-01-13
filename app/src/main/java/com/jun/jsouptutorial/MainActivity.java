@@ -10,17 +10,24 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     private EditText respText;
+    private ListView mListView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         final EditText edtUrl = (EditText) findViewById(R.id.edtURL);
         Button btnGo = (Button) findViewById(R.id.btnGo);
         respText = (EditText) findViewById(R.id.edtResp);
+        mListView = (ListView) findViewById(R.id.recipe_list_view);
         btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private class ParseURL extends AsyncTask<String, Void, String> {
+        private Elements mangaList;
 
         @Override
         protected String doInBackground(String... strings) {
@@ -91,6 +100,18 @@ public class MainActivity extends AppCompatActivity {
                     buffer.append("Data ["+data+"] \r\n");
                 }
 
+                // Get popular manga
+                mangaList = doc.select("a.popularitemcaption");
+                int count = 1;
+
+                for (Element manga : mangaList) {
+                    String data = manga.text();
+                    if (count - 1 == 0) {
+                        System.out.println(data);
+                        count--;
+                    }
+                }
+
             }
             catch(Throwable t) {
                 t.printStackTrace();
@@ -108,6 +129,12 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             respText.setText(s);
+            String[] mangaItems = new String[mangaList.size()];
+            for (int i = 0; i < mangaItems.length; i++) {
+                mangaItems[i] = mangaList.get(i).text();
+            }
+            ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, mangaItems);
+            mListView.setAdapter(adapter);
         }
     }
 
