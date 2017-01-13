@@ -34,32 +34,32 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/edtURL"
         android:layout_centerHorizontal="true"
-        android:text="Get Manga!"
+        android:text="Get Mangas!"
         android:layout_marginTop="15dp"
         android:id="@+id/btnGo"/>
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@id/btnGo"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:text="Result data"-->
+        <!--android:id="@+id/txt3"/>-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/edtResp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/txt3"-->
+        <!--android:inputType="textMultiLine|textNoSuggestions"-->
+        <!--android:lines="6"-->
+        <!--android:editable="false"-->
+        <!--android:layout_marginTop="10dp"/>-->
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/btnGo"
-        android:layout_marginTop="10dp"
-        android:text="Result data"
-        android:id="@+id/txt3"/>
-
-    <EditText
-        android:id="@+id/edtResp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txt3"
-        android:inputType="textMultiLine|textNoSuggestions"
-        android:lines="6"
-        android:editable="false"
-        android:layout_marginTop="10dp"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/edtResp"
         android:layout_marginTop="10dp"
         android:text="Popular Mangas"
         android:id="@+id/txt4"/>

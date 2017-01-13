@@ -1,5 +1,6 @@
 package com.jun.jsouptutorial;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,11 +38,15 @@ public class MainActivity extends AppCompatActivity {
 
         final EditText edtUrl = (EditText) findViewById(R.id.edtURL);
         Button btnGo = (Button) findViewById(R.id.btnGo);
-        respText = (EditText) findViewById(R.id.edtResp);
+//        respText = (EditText) findViewById(R.id.edtResp);
         mListView = (ListView) findViewById(R.id.recipe_list_view);
         btnGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (view != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                }
                 String siteUrl = edtUrl.getText().toString();
                 ( new ParseURL() ).execute(new String[]{siteUrl});
             }
@@ -68,12 +74,13 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class ParseURL extends AsyncTask<String, Void, String> {
+    private class ParseURL extends AsyncTask<String, Void, String[]> {
         private Elements mangaList;
 
         @Override
-        protected String doInBackground(String... strings) {
-            StringBuffer buffer = new StringBuffer();
+        protected String[] doInBackground(String... strings) {
+            //StringBuffer buffer = new StringBuffer();
+            String[] mangaItems = {};
             try {
                 Log.d("JSwa", "Connecting to ["+strings[0]+"]");
                 Document doc  = Jsoup.connect(strings[0]).get();
@@ -81,43 +88,53 @@ public class MainActivity extends AppCompatActivity {
                 // Get document (HTML page) title
                 String title = doc.title();
                 Log.d("JSwA", "Title ["+title+"]");
-                buffer.append("Title: " + title + "\r\n");
-
-                // Get meta info
-                Elements metaElems = doc.select("meta");
-                buffer.append("META DATA\r\n");
-                for (Element metaElem : metaElems) {
-                    String name = metaElem.attr("name");
-                    String content = metaElem.attr("content");
-                    buffer.append("name ["+name+"] - content ["+content+"] \r\n");
-                }
-
-                Elements topicList = doc.select("h2.topic");
-                buffer.append("Topic list\r\n");
-                for (Element topic : topicList) {
-                    String data = topic.text();
-
-                    buffer.append("Data ["+data+"] \r\n");
-                }
+//                buffer.append("Title: " + title + "\r\n");
+//
+//                // Get meta info
+//                Elements metaElems = doc.select("meta");
+//                buffer.append("META DATA\r\n");
+//                for (Element metaElem : metaElems) {
+//                    String name = metaElem.attr("name");
+//                    String content = metaElem.attr("content");
+//                    buffer.append("name ["+name+"] - content ["+content+"] \r\n");
+//                }
+//
+//                Elements topicList = doc.select("h2.topic");
+//                buffer.append("Topic list\r\n");
+//                for (Element topic : topicList) {
+//                    String data = topic.text();
+//
+//                    buffer.append("Data ["+data+"] \r\n");
+//                }
 
                 // Get popular manga
-                mangaList = doc.select("a.popularitemcaption");
-                int count = 1;
+//                mangaList = doc.select("a.popularitemcaption");
+//                mangaItems = new String[mangaList.size()];
+//                for (int i = 0; i < mangaItems.length; i++) {
+//                    mangaItems[i] = mangaList.get(i).text();
+//                }
 
-                for (Element manga : mangaList) {
-                    String data = manga.text();
-                    if (count - 1 == 0) {
-                        System.out.println(data);
-                        count--;
-                    }
+                mangaList = doc.select("a.chapters");
+                mangaItems = new String[mangaList.size()];
+                for (int i = 0; i < mangaItems.length; i++) {
+                    mangaItems[i] = mangaList.get(i).text();
                 }
+//                int count = 1;
+//
+//                for (Element manga : mangaList) {
+//                    String data = manga.text();
+//                    if (count - 1 == 0) {
+//                        System.out.println(data);
+//                        count--;
+//                    }
+//                }
 
             }
             catch(Throwable t) {
                 t.printStackTrace();
             }
 
-            return buffer.toString();
+            return mangaItems;
         }
 
         @Override
@@ -125,15 +142,27 @@ public class MainActivity extends AppCompatActivity {
             super.onPreExecute();
         }
 
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            respText.setText(s);
-            String[] mangaItems = new String[mangaList.size()];
-            for (int i = 0; i < mangaItems.length; i++) {
-                mangaItems[i] = mangaList.get(i).text();
-            }
-            ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, mangaItems);
+//        @Override
+//        protected void onPostExecute(String s) {
+//            super.onPostExecute(s);
+//            respText.setText(s);
+//            String[] mangaItems = new String[mangaList.size()];
+//            for (int i = 0; i < mangaItems.length; i++) {
+//                mangaItems[i] = mangaList.get(i).text();
+//            }
+//            ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, mangaItems);
+//            mListView.setAdapter(adapter);
+//        }
+
+
+        protected void onPostExecute(String[] res) {
+            //super.onPostExecute(res);
+            //respText.setText(s);
+//            String[] mangaItems = new String[mangaList.size()];
+//            for (int i = 0; i < mangaItems.length; i++) {
+//                mangaItems[i] = mangaList.get(i).text();
+//            }
+            ArrayAdapter adapter = new ArrayAdapter(MainActivity.this, android.R.layout.simple_list_item_1, res);
             mListView.setAdapter(adapter);
         }
     }
