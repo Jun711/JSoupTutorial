@@ -22,12 +22,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText respText;
+//    private EditText respText;
     private ListView mListView;
 
 
@@ -36,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final EditText edtUrl = (EditText) findViewById(R.id.edtURL);
+       // final EditText edtUrl = (EditText) findViewById(R.id.edtURL);
         Button btnGo = (Button) findViewById(R.id.btnGo);
 //        respText = (EditText) findViewById(R.id.edtResp);
         mListView = (ListView) findViewById(R.id.recipe_list_view);
@@ -47,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 }
-                String siteUrl = edtUrl.getText().toString();
+//                String siteUrl = edtUrl.getText().toString();
+                String siteUrl = "http://www.mangapanda.com";
                 ( new ParseURL() ).execute(new String[]{siteUrl});
             }
         });    }
@@ -119,15 +118,6 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < mangaItems.length; i++) {
                     mangaItems[i] = mangaList.get(i).text();
                 }
-//                int count = 1;
-//
-//                for (Element manga : mangaList) {
-//                    String data = manga.text();
-//                    if (count - 1 == 0) {
-//                        System.out.println(data);
-//                        count--;
-//                    }
-//                }
 
             }
             catch(Throwable t) {
